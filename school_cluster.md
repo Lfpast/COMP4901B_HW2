@@ -68,7 +68,7 @@ chmod 700 /store/comp4901b/your_username
 Navigate into your newly created directory and clone the homework project from its repository.
 
 ```bash
-cd /store/comp4901b/your_username
+cd /store/comp4901b/yjiaag
 git clone <repository_url>
 ```
 
