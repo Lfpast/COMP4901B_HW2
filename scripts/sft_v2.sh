@@ -22,7 +22,7 @@ NUM_GPUS=1
 
 # Aggressive batch configuration
 TOTALBSZ=128          # Effective batch size
-BSZPERDEV=2           # Higher batch size (possible with shorter sequences)
+BSZPERDEV=4           # Higher batch size (possible with shorter sequences)
 GRADACC=$((TOTALBSZ / NUM_GPUS / BSZPERDEV))
 
 export CUDA_VISIBLE_DEVICES=${DEVICES}
@@ -59,7 +59,7 @@ python train_hw_parallel.py \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --do_eval False \
-    --model_max_length 2048 \
+    --model_max_length 1024 \
     --lazy_preprocess True \
     --report_to "wandb" \
     --run_name ${RUNNAME} \
