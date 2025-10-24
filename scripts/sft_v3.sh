@@ -20,9 +20,9 @@ OUTPUTPATH="ckpt"
 DEVICES="0"
 NUM_GPUS=1
 
-# Conservative batch configuration
+# Conservative batch configuration (OPTIMIZED based on v1 experience)
 TOTALBSZ=128          # Effective batch size
-BSZPERDEV=1           # Conservative for full 2048 length
+BSZPERDEV=2           # Increased from 1 to 2 for better GPU utilization
 GRADACC=$((TOTALBSZ / NUM_GPUS / BSZPERDEV))
 
 export CUDA_VISIBLE_DEVICES=${DEVICES}
@@ -36,9 +36,9 @@ echo "GPUs: ${NUM_GPUS} (Device ${DEVICES})"
 echo "Batch size per device: ${BSZPERDEV}"
 echo "Gradient accumulation: ${GRADACC} steps"
 echo "Effective batch size: ${TOTALBSZ}"
-echo "Learning rate: 2.5e-5 (moderate)"
+echo "Learning rate: 2.5e-5"
 echo "Epochs: 4 (balanced)"
-echo "Sequence length: 2048 (full context)"
+echo "Sequence length: 1536 (balanced: context vs memory)"
 echo "Warmup: 0.2 (extended for stability)"
 echo "=========================================="
 
@@ -60,7 +60,7 @@ python train_hw_parallel.py \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --do_eval False \
-    --model_max_length 2048 \
+    --model_max_length 1536 \
     --lazy_preprocess True \
     --report_to "wandb" \
     --run_name ${RUNNAME} \
