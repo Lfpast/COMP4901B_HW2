@@ -15,7 +15,7 @@ export WANDB_PROJECT="COMP4901B-Homework2"
 RUNNAME="HW2_v2"
 MODELPATH="SmolLM2-135M"
 DATAPATH="smol-smoltalk-6k.json"
-MODEL_SIZE="135M"
+MODEL_SIZE="0.6B"
 OUTPUTPATH="ckpt"
 DEVICES="0"
 NUM_GPUS=1
@@ -30,7 +30,7 @@ export CUDA_VISIBLE_DEVICES=${DEVICES}
 echo "=========================================="
 echo "Training Configuration - HW2_v2 (AGGRESSIVE)"
 echo "=========================================="
-echo "Model: ${MODELPATH} (${MODEL_SIZE})"
+echo "Model: ${Mgit ODELPATH} (${MODEL_SIZE})"
 echo "Dataset: ${DATAPATH}"
 echo "GPUs: ${NUM_GPUS} (Device ${DEVICES})"
 echo "Batch size per device: ${BSZPERDEV}"
@@ -49,13 +49,12 @@ python train_hw_parallel.py \
     --per_device_train_batch_size ${BSZPERDEV} \
     --per_device_eval_batch_size 1 \
     --gradient_accumulation_steps ${GRADACC} \
-    --eval_steps 100 \
-    --save_strategy "epoch" \
-    --save_steps 100 \
-    --save_total_limit 3 \
+    --eval_steps 50 \
+    --save_strategy "steps" \
+    --save_steps 5 \
+    --save_total_limit 2 \
     --learning_rate 4e-5 \
-    --weight_decay 0.01 \
-    --warmup_ratio 0.15 \
+    --warmup_ratio 0.1 \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --do_eval False \
@@ -67,9 +66,7 @@ python train_hw_parallel.py \
     --flash_attn False \
     --dataloader_num_workers 2 \
     --preprocess_workers 2 \
-    --max_rounds 5 \
-    --gradient_checkpointing True \
-    --optim "adamw_torch"
+    --max_rounds 5 
 
 echo ""
 echo "=========================================="
