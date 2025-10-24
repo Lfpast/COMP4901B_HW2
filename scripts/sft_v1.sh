@@ -1,4 +1,4 @@
-export WANDB_API_KEY=""
+export WANDB_API_KEY="f91ffccf67c9e7a8c326c0a655ca367f0f89e2e1"
 
 export WANDB_PROJECT="COMP4901B-Homework2"
 RUNNAME="HW2_v1"
@@ -12,7 +12,7 @@ NUM_GPUS=1
 # Optimized configuration for smooth training curve with ~100 steps
 # Target: Match classmate's smooth curve (loss 1.65 -> 1.0 in ~100 steps)
 TOTALBSZ=256      # Medium-large batch for stability
-BSZPERDEV=2       # 2080Ti 11GB can handle this
+BSZPERDEV=1       # Reduced to 1 to avoid OOM
 GRADACC=$((TOTALBSZ / NUM_GPUS / BSZPERDEV))
 
 export CUDA_VISIBLE_DEVICES=${DEVICES}
