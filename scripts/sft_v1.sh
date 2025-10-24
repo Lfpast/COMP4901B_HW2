@@ -11,7 +11,7 @@ NUM_GPUS=1
 
 # Optimized configuration for smooth training curve with ~100 steps
 # Target: Match classmate's smooth curve (loss 1.65 -> 1.0 in ~100 steps)
-TOTALBSZ=256      # Medium-large batch for stability
+TOTALBSZ=512      # Medium-large batch for stability
 BSZPERDEV=1       # Reduced to 1 to avoid OOM
 GRADACC=$((TOTALBSZ / NUM_GPUS / BSZPERDEV))
 
@@ -40,14 +40,14 @@ python train_hw_parallel.py \
     --model_name_or_path ${MODELPATH} \
     --data_path ${DATAPATH} \
     --output_dir ${OUTPUTPATH}/${RUNNAME} \
-    --num_train_epochs 4 \
+    --num_train_epochs 8 \
     --per_device_train_batch_size ${BSZPERDEV} \
     --per_device_eval_batch_size 1 \
     --gradient_accumulation_steps ${GRADACC} \
     --eval_steps 100 \
     --save_strategy "epoch" \
     --save_total_limit 1 \
-    --learning_rate 5e-5 \
+    --learning_rate 8e-5 \
     --warmup_ratio 0.3 \
     --max_grad_norm 1.0 \
     --weight_decay 0.01 \
