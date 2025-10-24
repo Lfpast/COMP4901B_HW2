@@ -7,7 +7,7 @@ DATAPATH="smol-smoltalk-6k.json"
 MODEL_SIZE="0.135B"
 OUTPUTPATH="ckpt"
 DEVICES="0"
-NUM_GPUS=2
+NUM_GPUS=1
 
 # V4 Fast Configuration: DeepSpeed Accelerated
 TOTALBSZ=128          # Effective batch size
