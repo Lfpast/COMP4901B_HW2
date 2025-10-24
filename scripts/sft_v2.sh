@@ -22,7 +22,7 @@ NUM_GPUS=1
 
 # Aggressive batch configuration
 TOTALBSZ=128          # Effective batch size
-BSZPERDEV=4           # Higher batch size (possible with shorter sequences)
+BSZPERDEV=2           # Higher batch size (possible with shorter sequences)
 GRADACC=$((TOTALBSZ / NUM_GPUS / BSZPERDEV))
 
 export CUDA_VISIBLE_DEVICES=${DEVICES}
@@ -36,16 +36,16 @@ echo "GPUs: ${NUM_GPUS} (Device ${DEVICES})"
 echo "Batch size per device: ${BSZPERDEV}"
 echo "Gradient accumulation: ${GRADACC} steps"
 echo "Effective batch size: ${TOTALBSZ}"
-echo "Learning rate: 5e-5 (AGGRESSIVE)"
-echo "Epochs: 6 (extended training)"
-echo "Sequence length: 1280 (allows larger batch)"
+echo "Learning rate: 4e-5 (AGGRESSIVE)"
+echo "Epochs: 4 (extended training)"
+echo "Sequence length: 2048 (allows larger batch)"
 echo "=========================================="
 
 python train_hw_parallel.py \
     --model_name_or_path ${MODELPATH} \
     --data_path ${DATAPATH} \
     --output_dir ${OUTPUTPATH}/${RUNNAME} \
-    --num_train_epochs 6 \
+    --num_train_epochs 4 \
     --per_device_train_batch_size ${BSZPERDEV} \
     --per_device_eval_batch_size 1 \
     --gradient_accumulation_steps ${GRADACC} \
@@ -53,13 +53,13 @@ python train_hw_parallel.py \
     --save_strategy "epoch" \
     --save_steps 100 \
     --save_total_limit 3 \
-    --learning_rate 5e-5 \
+    --learning_rate 4e-5 \
     --weight_decay 0.01 \
-    --warmup_ratio 0.1 \
+    --warmup_ratio 0.15 \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --do_eval False \
-    --model_max_length 1280 \
+    --model_max_length 2048 \
     --lazy_preprocess True \
     --report_to "wandb" \
     --run_name ${RUNNAME} \
