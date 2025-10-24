@@ -39,7 +39,6 @@ echo "✅ Full sequence length (1024 → 2048) for better context"
 echo "=========================================="
 
 python train_hw_parallel.py \
-    --deepspeed ds_configs/zero2_offload.json \
     --model_name_or_path ${MODELPATH} \
     --data_path ${DATAPATH} \
     --output_dir ${OUTPUTPATH}/${RUNNAME} \
