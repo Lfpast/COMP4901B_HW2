@@ -1,14 +1,3 @@
-#!/bin/bash
-# Optimized SFT configuration for 2080Ti (11GB VRAM)
-# Target: Achieve strict accuracy significantly higher than 22% (25-35 points)
-#
-# Key optimizations:
-# 1. Higher learning rate (3e-5) for faster convergence
-# 2. More epochs (5) to ensure thorough learning
-# 3. Longer warmup (0.15) for stability
-# 4. Cosine decay with restarts for better optimization
-# 5. Optimized batch size and sequence length for 11GB VRAM
-
 export WANDB_API_KEY="f91ffccf67c9e7a8c326c0a655ca367f0f89e2e1"
 export WANDB_PROJECT="COMP4901B-Homework2"
 

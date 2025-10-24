@@ -1,14 +1,3 @@
-#!/bin/bash
-# Aggressive SFT configuration for 2080Ti (11GB VRAM) - Version 2
-# Strategy: Higher learning rate + More epochs for maximum performance
-# Target: Achieve strict accuracy > 25% (top tier scoring)
-#
-# Key features:
-# 1. Very high learning rate (5e-5) - aggressive learning
-# 2. Extended training (6 epochs) - ensure full convergence
-# 3. Linear warmup + cosine decay - smoother optimization
-# 4. Smaller sequence length (1280) - allows batch_size=4 on 11GB
-
 export WANDB_API_KEY="f91ffccf67c9e7a8c326c0a655ca367f0f89e2e1"
 export WANDB_PROJECT="COMP4901B-Homework2"
 
@@ -30,7 +19,7 @@ export CUDA_VISIBLE_DEVICES=${DEVICES}
 echo "=========================================="
 echo "Training Configuration - HW2_v2 (AGGRESSIVE)"
 echo "=========================================="
-echo "Model: ${Mgit ODELPATH} (${MODEL_SIZE})"
+echo "Model: ${MODELPATH} (${MODEL_SIZE})"
 echo "Dataset: ${DATAPATH}"
 echo "GPUs: ${NUM_GPUS} (Device ${DEVICES})"
 echo "Batch size per device: ${BSZPERDEV}"
@@ -38,7 +27,7 @@ echo "Gradient accumulation: ${GRADACC} steps"
 echo "Effective batch size: ${TOTALBSZ}"
 echo "Learning rate: 4e-5 (AGGRESSIVE)"
 echo "Epochs: 4 (extended training)"
-echo "Sequence length: 2048 (allows larger batch)"
+echo "Sequence length: 1024"
 echo "=========================================="
 
 python train_hw_parallel.py \
