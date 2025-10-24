@@ -24,15 +24,17 @@ echo "GPUs: ${NUM_GPUS}"
 echo "Batch size per GPU: ${BSZPERDEV}"
 echo "Gradient accumulation: ${GRADACC} steps"
 echo "Effective batch size: ${TOTALBSZ}"
-echo "Expected total steps: ~94 (6000÷256×4)"
+echo "Expected total steps: ~94 (6000÷512×8)"
 echo ""
 echo "Key optimizations for smooth curve:"
-echo "  - Batch size 256 (2x normal) for stable gradients"
-echo "  - Learning rate 5e-5 (2.5x scaled)"
-echo "  - 30% warmup (first 28 steps)"
-echo "  - Gradient clipping (max_grad_norm=1.0)"
-echo "  - Weight decay (0.01) for regularization"
-echo "  - 4 epochs to reach ~100 steps"
+echo "  - Batch size 512 for ultra-stable gradients"
+echo "  - Learning rate 5e-5 (conservative for stability)"
+echo "  - 50% warmup (LONG warmup for smooth start!)"
+echo "  - Gradient clipping 0.3 (AGGRESSIVE for no spikes)"
+echo "  - Adam beta1=0.95 (MORE momentum for smoothness)"
+echo "  - Weight decay 0.01 for regularization"
+echo "  - Gradient checkpointing (save memory)"
+echo "  - 8 epochs to reach ~94 steps"
 echo "=========================================="
 
 # Single GPU training without DeepSpeed
@@ -47,13 +49,18 @@ python train_hw_parallel.py \
     --eval_steps 100 \
     --save_strategy "epoch" \
     --save_total_limit 1 \
-    --learning_rate 8e-5 \
-    --warmup_ratio 0.3 \
-    --max_grad_norm 1.0 \
+    --learning_rate 5e-5 \
+    --warmup_ratio 0.5 \
+    --warmup_steps 0 \
+    --max_grad_norm 0.3 \
     --weight_decay 0.01 \
+    --adam_beta1 0.95 \
+    --adam_beta2 0.999 \
+    --adam_epsilon 1e-8 \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --do_eval False \
+    --gradient_checkpointing True \
     --model_max_length 1024 \
     --lazy_preprocess True \
     --report_to "wandb" \
