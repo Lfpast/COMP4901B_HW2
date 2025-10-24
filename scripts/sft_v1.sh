@@ -20,12 +20,13 @@ OUTPUTPATH="ckpt"
 DEVICES="0"
 NUM_GPUS=1
 
-# Optimized batch configuration for 2080Ti 11GB
+# Optimized batch configuration for 2080Ti 11GB (SPEED OPTIMIZED)
 TOTALBSZ=128          # Keep effective batch size for stable gradients
-BSZPERDEV=2           # Increased from 1 to 2 (11GB can handle this)
+BSZPERDEV=4           # Increased to 4 for faster training
 GRADACC=$((TOTALBSZ / NUM_GPUS / BSZPERDEV))
 
 export CUDA_VISIBLE_DEVICES=${DEVICES}
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
 
 echo "=========================================="
 echo "Training Configuration - HW2_v1"
@@ -38,7 +39,7 @@ echo "Gradient accumulation: ${GRADACC} steps"
 echo "Effective batch size: ${TOTALBSZ}"
 echo "Learning rate: 3e-5 (higher for faster learning)"
 echo "Epochs: 5 (more epochs for better convergence)"
-echo "Sequence length: 1536 (optimized for 11GB VRAM)"
+echo "Sequence length: 1280 (optimized for speed and VRAM)"
 echo "=========================================="
 
 python train_hw_parallel.py \
@@ -59,14 +60,14 @@ python train_hw_parallel.py \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --do_eval False \
-    --model_max_length 1536 \
+    --model_max_length 1280 \
     --lazy_preprocess True \
     --report_to "wandb" \
     --run_name ${RUNNAME} \
     --bf16 True \
     --flash_attn False \
-    --dataloader_num_workers 4 \
-    --preprocess_workers 4 \
+    --dataloader_num_workers 2 \
+    --preprocess_workers 2 \
     --max_rounds 5 \
     --gradient_checkpointing True \
     --optim "adamw_torch"

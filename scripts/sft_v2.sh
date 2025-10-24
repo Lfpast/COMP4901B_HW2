@@ -65,8 +65,8 @@ python train_hw_parallel.py \
     --run_name ${RUNNAME} \
     --bf16 True \
     --flash_attn False \
-    --dataloader_num_workers 4 \
-    --preprocess_workers 4 \
+    --dataloader_num_workers 2 \
+    --preprocess_workers 2 \
     --max_rounds 5 \
     --gradient_checkpointing True \
     --optim "adamw_torch"

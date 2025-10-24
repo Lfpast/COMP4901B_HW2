@@ -13,6 +13,7 @@
 | **Warmup Ratio** | 0.15 | 0.1 | 0.2 |
 | **预期训练时间** | ~2.5 小时 | ~2 小时 | ~3.5 小时 |
 | **显存使用** | ~9GB | ~10GB | ~8GB |
+| **DataLoader Workers** | 2 | 2 | 2 |
 | **目标准确率** | >23% | >25% | >22% |
 
 ## 🎯 推荐使用顺序
@@ -188,6 +189,9 @@ Write-Host "Improvement: +$($ft.strict_accuracy_percentage - $base.strict_accura
 
 # 或降低序列长度
 # 在脚本中修改: --model_max_length 1024
+
+# 或减少 worker 数量
+# 在脚本中修改: --dataloader_num_workers 1
 ```
 
 ### 问题 2: Training Loss 不下降
