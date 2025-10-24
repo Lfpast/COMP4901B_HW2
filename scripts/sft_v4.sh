@@ -7,11 +7,11 @@ DATAPATH="smol-smoltalk-6k.json"
 MODEL_SIZE="0.6B"
 OUTPUTPATH="ckpt"
 DEVICES="0"
-NUM_GPUS=2
+NUM_GPUS=1
 
 # V4 Configuration: Smooth & Stable Training
 TOTALBSZ=128          # Effective batch size
-BSZPERDEV=2           # Batch size per device (2080Ti can handle this)
+BSZPERDEV=1           # Batch size per device (2080Ti can handle this)
 GRADACC=$((TOTALBSZ / NUM_GPUS / BSZPERDEV))
 
 export CUDA_VISIBLE_DEVICES=${DEVICES}
@@ -39,6 +39,7 @@ echo "✅ Full sequence length (1024 → 2048) for better context"
 echo "=========================================="
 
 python train_hw_parallel.py \
+    --deepspeed ds_configs/zero2_offload.json \
     --model_name_or_path ${MODELPATH} \
     --data_path ${DATAPATH} \
     --output_dir ${OUTPUTPATH}/${RUNNAME} \
