@@ -1,7 +1,7 @@
 export WANDB_API_KEY="f91ffccf67c9e7a8c326c0a655ca367f0f89e2e1"
 export WANDB_PROJECT="COMP4901B-Homework2"
 
-RUNNAME="HW2_v2"
+RUNNAME="HW2_v3"
 MODELPATH="SmolLM2-135M"
 DATAPATH="smol-smoltalk-6k.json"
 MODEL_SIZE="0.6B"
@@ -10,14 +10,14 @@ DEVICES="0"
 NUM_GPUS=1
 
 # Aggressive batch configuration
-TOTALBSZ=128          # Effective batch size
-BSZPERDEV=4           # Higher batch size (possible with shorter sequences)
+TOTALBSZ=256          # Effective batch size
+BSZPERDEV=2           # Higher batch size (possible with shorter sequences)
 GRADACC=$((TOTALBSZ / NUM_GPUS / BSZPERDEV))
 
 export CUDA_VISIBLE_DEVICES=${DEVICES}
 
 echo "=========================================="
-echo "Training Configuration - HW2_v2 (AGGRESSIVE)"
+echo "Training Configuration - HW2_v3"
 echo "=========================================="
 echo "Model: ${MODELPATH} (${MODEL_SIZE})"
 echo "Dataset: ${DATAPATH}"
@@ -34,7 +34,7 @@ python train_hw_parallel.py \
     --model_name_or_path ${MODELPATH} \
     --data_path ${DATAPATH} \
     --output_dir ${OUTPUTPATH}/${RUNNAME} \
-    --num_train_epochs 4 \
+    --num_train_epochs 5 \
     --per_device_train_batch_size ${BSZPERDEV} \
     --per_device_eval_batch_size 1 \
     --gradient_accumulation_steps ${GRADACC} \
@@ -43,7 +43,7 @@ python train_hw_parallel.py \
     --save_steps 5 \
     --save_total_limit 2 \
     --learning_rate 4e-5 \
-    --warmup_ratio 0.1 \
+    --warmup_ratio 0.15 \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --do_eval False \
@@ -68,5 +68,5 @@ echo "   cd ifeval"
 echo "   python run_ifeval_local.py --mode all --model_path ../${OUTPUTPATH}/${RUNNAME} --output_dir ./results/${RUNNAME}"
 echo ""
 echo "2. Check strict accuracy in results/${RUNNAME}/summary.json"
-echo "   Target: > 25% (aggressive goal)"
+echo "   Target: > 25% "
 echo "=========================================="
