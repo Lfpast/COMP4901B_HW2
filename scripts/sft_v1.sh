@@ -6,7 +6,7 @@ MODELPATH="SmolLM2-135M"
 DATAPATH="smol-smoltalk-6k.json"
 MODEL_SIZE="0.6B"
 OUTPUTPATH="ckpt"
-DEVICES="2"  # e.g. 0,1,2,3
+DEVICES="3"  # e.g. 0,1,2,3
 NUM_GPUS=1
 
 # Optimized configuration for smooth training curve with ~100 steps
